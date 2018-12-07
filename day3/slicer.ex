@@ -87,4 +87,34 @@ defmodule Slicer do
     |> Slicer.all_unique_points()
     |> MapSet.size()
   end
+
+  def overlap(claim, claim_list) do
+    x =
+      for i <- claim_list do
+        interval_intersection(make_interval(claim), make_interval(i))
+      end
+      |> MapSet.new()
+
+    x != MapSet.new([nil])
+  end
+
+  defp find_claim_that_doesnt_overlap_aux([head], []) do
+    head
+  end
+
+  defp find_claim_that_doesnt_overlap_aux([head | tail], viewed) do
+    if not overlap(head, tail ++ viewed) do
+      head
+    else
+      find_claim_that_doesnt_overlap_aux(tail, viewed ++ [head])
+    end
+  end
+
+  def find_claim_that_doesnt_overlap(filename) do
+    claim =
+      Slicer.all_claims(filename)
+      |> find_claim_that_doesnt_overlap_aux([])
+
+    claim[:id]
+  end
 end
