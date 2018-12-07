@@ -83,8 +83,12 @@ defmodule SlicerTest do
     assert Slicer.all_unique_points([r1, r2, r3]) == result
   end
 
-  test "part 1 solution for my file (each person receives its own" do
+  test "part 1 solution for my file (each person receives its own)" do
     # Result 111935
     assert Slicer.solve_part_1("input") == 111_935
+  end
+
+  test "part 2 solution for my file (each person receives its own)" do
+    assert Slicer.find_claim_that_doesnt_overlap("input") == 650
   end
 end
